@@ -22,7 +22,7 @@
     </parent>
 
     <artifactId>kivakit-filesystems-hdfs-proxy</artifactId>
-    <version>1.7.1-SNAPSHOT</version>
+    <version>1.7.1</version>
 
     <properties>
         <jar.name>kivakit-hdfs-proxy-${project.version}</jar.name>
@@ -39,7 +39,7 @@
         <dependency>
             <groupId>${project.groupId}</groupId>
             <artifactId>hadoop-doubly-shaded-protobuf</artifactId>
-            <version>${kivakit.version}</version>
+            <version>${kivakit.filesystems.version}</version>
         </dependency>
 
         <!-- HTTP Client -->
