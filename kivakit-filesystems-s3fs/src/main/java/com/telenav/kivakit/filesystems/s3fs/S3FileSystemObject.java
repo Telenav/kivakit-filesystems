@@ -19,19 +19,18 @@
 package com.telenav.kivakit.filesystems.s3fs;
 
 import com.telenav.kivakit.core.ensure.Ensure;
-import com.telenav.kivakit.core.language.Patterns;
 import com.telenav.kivakit.core.messaging.Listener;
 import com.telenav.kivakit.core.progress.ProgressReporter;
 import com.telenav.kivakit.core.value.count.Bytes;
+import com.telenav.kivakit.filesystem.FilePath;
 import com.telenav.kivakit.filesystem.spi.FileSystemObjectService;
 import com.telenav.kivakit.filesystem.spi.FolderService;
 import com.telenav.kivakit.filesystems.s3fs.internal.lexakai.DiagramS3;
 import com.telenav.kivakit.resource.CopyMode;
 import com.telenav.kivakit.resource.Resource;
-import com.telenav.kivakit.filesystem.FilePath;
 import com.telenav.kivakit.resource.writing.BaseWritableResource;
-import com.telenav.lexakai.annotations.LexakaiJavadoc;
 import com.telenav.lexakai.annotations.UmlClassDiagram;
+import org.jetbrains.annotations.NotNull;
 import software.amazon.awssdk.core.sync.RequestBody;
 import software.amazon.awssdk.regions.Region;
 import software.amazon.awssdk.services.s3.S3Client;
@@ -51,14 +50,14 @@ import java.util.regex.Pattern;
 
 import static com.telenav.kivakit.core.ensure.Ensure.ensureNotNull;
 import static com.telenav.kivakit.core.ensure.Ensure.unsupported;
+import static com.telenav.kivakit.core.language.Patterns.patternMatches;
 
 /**
  * Base functionality common to both {@link S3File} and {@link S3Folder}.
  *
  * @author jonathanl (shibo)
  */
-@UmlClassDiagram(diagram = DiagramS3.class)
-@LexakaiJavadoc(complete = true)
+@SuppressWarnings("unused") @UmlClassDiagram(diagram = DiagramS3.class)
 public abstract class S3FileSystemObject extends BaseWritableResource implements FileSystemObjectService
 {
     /** s3://${region}/${bucket}/${key} */
@@ -69,7 +68,7 @@ public abstract class S3FileSystemObject extends BaseWritableResource implements
 
     public static boolean accepts(String path)
     {
-        return Patterns.matches(PATTERN, path);
+        return patternMatches(PATTERN, path);
     }
 
     protected static S3Client clientFor(Region region)
@@ -145,7 +144,7 @@ public abstract class S3FileSystemObject extends BaseWritableResource implements
     }
 
     @Override
-    public void copyFrom(Resource resource, CopyMode mode, ProgressReporter reporter)
+    public void copyFrom(Resource resource, @NotNull CopyMode mode, @NotNull ProgressReporter reporter)
     {
         var in = resource.openForReading();
 

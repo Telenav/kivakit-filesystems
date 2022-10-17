@@ -20,14 +20,14 @@ package com.telenav.kivakit.filesystem.java;
 
 import com.telenav.kivakit.core.io.Nio;
 import com.telenav.kivakit.core.progress.ProgressReporter;
+import com.telenav.kivakit.filesystem.FilePath;
 import com.telenav.kivakit.filesystem.Folder;
 import com.telenav.kivakit.filesystem.spi.FileService;
 import com.telenav.kivakit.filesystem.spi.FolderService;
 import com.telenav.kivakit.interfaces.comparison.Matcher;
 import com.telenav.kivakit.resource.CopyMode;
-import com.telenav.kivakit.resource.writing.WritableResource;
 import com.telenav.kivakit.resource.FileName;
-import com.telenav.kivakit.filesystem.FilePath;
+import com.telenav.kivakit.resource.writing.WritableResource;
 import org.jetbrains.annotations.NotNull;
 
 import java.nio.file.Files;
@@ -50,7 +50,8 @@ public class JavaFolder extends JavaFileSystemObject implements FolderService
     }
 
     @Override
-    public void copyTo(WritableResource destination, CopyMode mode, ProgressReporter reporter)
+    public void copyTo(@NotNull WritableResource destination, @NotNull CopyMode mode,
+                       @NotNull ProgressReporter reporter)
     {
         super.copyTo(destination, mode, reporter);
     }
@@ -110,13 +111,12 @@ public class JavaFolder extends JavaFileSystemObject implements FolderService
     }
 
     @Override
-    public List<FileService> nestedFiles(Matcher<FilePath> matcher)
+    public List<FileService> nestedFiles(@NotNull Matcher<FilePath> matcher)
     {
         var files = new ArrayList<FileService>();
-        try
+        try (var stream = Files.walk(javaPath()))
         {
-            Files.walk(javaPath())
-                    .filter(Files::isRegularFile)
+            stream.filter(Files::isRegularFile)
                     .forEach(at ->
                     {
                         var filePath = FilePath.filePath(at);
@@ -135,13 +135,12 @@ public class JavaFolder extends JavaFileSystemObject implements FolderService
     }
 
     @Override
-    public List<FolderService> nestedFolders(Matcher<FilePath> matcher)
+    public List<FolderService> nestedFolders(@NotNull Matcher<FilePath> matcher)
     {
         var folders = new ArrayList<FolderService>();
-        try
+        try (var stream = Files.walk(javaPath()))
         {
-            Files.walk(javaPath())
-                    .filter(Files::isDirectory)
+            stream.filter(Files::isDirectory)
                     .forEach(at ->
                     {
                         var filePath = FilePath.filePath(at);
@@ -150,6 +149,9 @@ public class JavaFolder extends JavaFileSystemObject implements FolderService
                             folders.add(new JavaFolder(filePath));
                         }
                     });
+            {
+
+            }
         }
         catch (Exception e)
         {

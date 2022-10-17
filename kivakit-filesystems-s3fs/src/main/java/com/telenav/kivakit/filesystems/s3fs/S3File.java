@@ -24,8 +24,8 @@ import com.telenav.kivakit.core.value.count.Bytes;
 import com.telenav.kivakit.filesystem.FilePath;
 import com.telenav.kivakit.filesystem.spi.FileService;
 import com.telenav.kivakit.filesystems.s3fs.internal.lexakai.DiagramS3;
-import com.telenav.lexakai.annotations.LexakaiJavadoc;
 import com.telenav.lexakai.annotations.UmlClassDiagram;
+import org.jetbrains.annotations.NotNull;
 import software.amazon.awssdk.services.s3.model.GetObjectRequest;
 
 import java.io.InputStream;
@@ -41,8 +41,8 @@ import static com.telenav.kivakit.core.ensure.Ensure.unsupported;
  *
  * @author jonathanl (shibo)
  */
+@SuppressWarnings("unused")
 @UmlClassDiagram(diagram = DiagramS3.class)
-@LexakaiJavadoc(complete = true)
 public class S3File extends S3FileSystemObject implements FileService
 {
     public S3File(FilePath path)
@@ -87,6 +87,7 @@ public class S3File extends S3FileSystemObject implements FileService
                 .key(key())
                 .build();
 
+        //noinspection resource
         return client().getObject(request);
     }
 
@@ -108,7 +109,7 @@ public class S3File extends S3FileSystemObject implements FileService
     }
 
     @Override
-    public boolean renameTo(FileService that)
+    public boolean renameTo(@NotNull FileService that)
     {
         if (isOnSameFileSystem(that))
         {

@@ -51,7 +51,6 @@ import static com.telenav.kivakit.core.ensure.Ensure.unsupported;
  * @see Folder
  */
 @UmlClassDiagram(diagram = DiagramS3.class)
-@LexakaiJavadoc(complete = true)
 public class S3FileSystemService implements FileSystemService
 {
     @Override
@@ -61,21 +60,21 @@ public class S3FileSystemService implements FileSystemService
     }
 
     @Override
-    public @NotNull DiskService diskService(FilePath path)
+    public @NotNull DiskService diskService(@NotNull FilePath path)
     {
         return unsupported();
     }
 
     @Override
     @UmlRelation(label = "provides")
-    public @NotNull S3File fileService(FilePath path)
+    public @NotNull S3File fileService(@NotNull FilePath path)
     {
         return new S3File(path);
     }
 
     @Override
     @UmlRelation(label = "provides")
-    public @NotNull S3Folder folderService(FilePath path)
+    public @NotNull S3Folder folderService(@NotNull FilePath path)
     {
         return new S3Folder(path);
     }

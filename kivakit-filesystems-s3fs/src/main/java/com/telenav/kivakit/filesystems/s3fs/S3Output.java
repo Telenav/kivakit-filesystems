@@ -18,18 +18,22 @@
 
 package com.telenav.kivakit.filesystems.s3fs;
 
-import com.telenav.kivakit.core.messaging.Listener;
-import com.telenav.kivakit.core.progress.ProgressReporter;
+import com.telenav.kivakit.core.io.IO;
+import com.telenav.kivakit.core.logging.Logger;
+import com.telenav.kivakit.core.logging.LoggerFactory;
 import com.telenav.kivakit.filesystem.File;
 import com.telenav.kivakit.filesystem.FilePath;
 import com.telenav.kivakit.filesystem.Folder;
-import com.telenav.kivakit.filesystem.Folder.Type;
-import com.telenav.lexakai.annotations.LexakaiJavadoc;
 import org.jetbrains.annotations.NotNull;
 
 import java.io.IOException;
 import java.io.OutputStream;
 
+import static com.telenav.kivakit.core.messaging.Listener.consoleListener;
+import static com.telenav.kivakit.core.progress.ProgressReporter.nullProgressReporter;
+import static com.telenav.kivakit.filesystem.File.parseFile;
+import static com.telenav.kivakit.filesystem.Folder.FolderType.CLEAN_UP_ON_EXIT;
+import static com.telenav.kivakit.filesystem.Folder.temporaryFolderForProcess;
 import static com.telenav.kivakit.resource.CopyMode.OVERWRITE;
 
 /**
@@ -37,11 +41,12 @@ import static com.telenav.kivakit.resource.CopyMode.OVERWRITE;
  *
  * @author songg
  */
-@LexakaiJavadoc(complete = true)
 public class S3Output extends OutputStream
 {
     // The temporary cache folder for storing materialized files
-    private static final Folder cacheFolder = Folder.temporaryForProcess(Type.CLEAN_UP_ON_EXIT).ensureExists();
+    private static final Folder cacheFolder = temporaryFolderForProcess(CLEAN_UP_ON_EXIT).ensureExists();
+
+    private static final Logger LOGGER = LoggerFactory.newLogger();
 
     // The cache file
     private final File cacheFile;
@@ -73,20 +78,13 @@ public class S3Output extends OutputStream
         {
             object.delete();
         }
-        object.copyFrom(cacheFile, OVERWRITE, ProgressReporter.none());
+        object.copyFrom(cacheFile, OVERWRITE, nullProgressReporter());
     }
 
     @Override
     public void flush()
     {
-        try
-        {
-            outputStream.flush();
-        }
-        catch (IOException e)
-        {
-            e.printStackTrace();
-        }
+        IO.flush(LOGGER, outputStream);
     }
 
     @Override
@@ -106,6 +104,6 @@ public class S3Output extends OutputStream
         // Flatten path being cached into a long filename by turning all file
         // system meta characters into underscores.
         // For example, "a/b/c.txt" becomes "a_b_c.txt"
-        return File.parseFile(Listener.consoleListener(), cacheFolder + "/" + filePath.toString().replaceAll("[/:]", "_"));
+        return parseFile(consoleListener(), cacheFolder + "/" + filePath.toString().replaceAll("[/:]", "_"));
     }
 }

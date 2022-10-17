@@ -13,6 +13,7 @@ import java.util.List;
 import java.util.Map;
 
 import static com.telenav.kivakit.core.ensure.Ensure.unsupported;
+import static com.telenav.kivakit.core.string.Strip.stripLeading;
 
 /**
  * Holds information for an entire GitHub repository tree, given a username, repository and branch.
@@ -79,7 +80,7 @@ public class GitHubTree extends BaseComponent
                 if (entryPath.startsWith(path))
                 {
                     // get the tail of the path
-                    var tail = Strip.leading(entryPath, path);
+                    var tail = stripLeading(entryPath, path);
 
                     // and if we are including all recursively, or the tail is not a path,
                     if (recursive || !tail.contains("/"))

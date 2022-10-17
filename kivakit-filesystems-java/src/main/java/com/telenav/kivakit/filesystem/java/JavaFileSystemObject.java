@@ -20,7 +20,6 @@ package com.telenav.kivakit.filesystem.java;
 
 import com.telenav.kivakit.core.io.Nio;
 import com.telenav.kivakit.core.progress.ProgressReporter;
-import com.telenav.kivakit.core.string.Paths;
 import com.telenav.kivakit.core.time.Time;
 import com.telenav.kivakit.filesystem.FilePath;
 import com.telenav.kivakit.filesystem.spi.FileSystemObjectService;
@@ -28,6 +27,7 @@ import com.telenav.kivakit.filesystem.spi.FolderService;
 import com.telenav.kivakit.resource.CopyMode;
 import com.telenav.kivakit.resource.writing.BaseWritableResource;
 import com.telenav.kivakit.resource.writing.WritableResource;
+import org.jetbrains.annotations.NotNull;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -41,7 +41,9 @@ import java.nio.file.attribute.PosixFilePermission;
 
 import static com.telenav.kivakit.core.ensure.Ensure.ensureNotNull;
 import static com.telenav.kivakit.core.ensure.Ensure.unsupported;
-import static com.telenav.kivakit.core.messaging.Listener.emptyListener;
+import static com.telenav.kivakit.core.messaging.Listener.nullListener;
+import static com.telenav.kivakit.core.string.Paths.pathHead;
+import static com.telenav.kivakit.core.string.Paths.pathTail;
 
 /**
  * Base functionality common to both {@link JavaFile} and {@link JavaFolder}.
@@ -64,11 +66,11 @@ public class JavaFileSystemObject extends BaseWritableResource implements FileSy
         var pathString = path.toString();
         if (pathString.contains("!/"))
         {
-            String head = Paths.head(pathString, "!/");
-            String tail = Paths.tail(pathString, "!/");
+            String head = pathHead(pathString, "!/");
+            String tail = pathTail(pathString, "!/");
 
             var uri = URI.create(head);
-            filesystem = Nio.filesystem(emptyListener(), uri);
+            filesystem = Nio.filesystem(nullListener(), uri);
             if (filesystem != null)
             {
                 this.path = filesystem.getPath(tail);
@@ -81,7 +83,7 @@ public class JavaFileSystemObject extends BaseWritableResource implements FileSy
             {
                 // until we find a filesystem.
                 var uri = URI.create(at.toString());
-                filesystem = Nio.filesystem(emptyListener(), uri);
+                filesystem = Nio.filesystem(nullListener(), uri);
                 if (filesystem != null)
                 {
                     this.path = path().last(path().size() - at.size()).withoutSchemes().asJavaPath();
@@ -100,7 +102,7 @@ public class JavaFileSystemObject extends BaseWritableResource implements FileSy
     }
 
     @Override
-    public void copyTo(WritableResource destination, CopyMode mode, ProgressReporter reporter)
+    public void copyTo(@NotNull WritableResource destination, @NotNull CopyMode mode, @NotNull ProgressReporter reporter)
     {
         try
         {

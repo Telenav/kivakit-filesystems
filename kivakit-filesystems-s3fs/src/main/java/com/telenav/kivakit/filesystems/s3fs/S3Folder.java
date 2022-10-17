@@ -30,8 +30,8 @@ import com.telenav.kivakit.filesystem.spi.FolderService;
 import com.telenav.kivakit.filesystems.s3fs.internal.lexakai.DiagramS3;
 import com.telenav.kivakit.interfaces.comparison.Matcher;
 import com.telenav.kivakit.resource.FileName;
-import com.telenav.lexakai.annotations.LexakaiJavadoc;
 import com.telenav.lexakai.annotations.UmlClassDiagram;
+import org.jetbrains.annotations.NotNull;
 import software.amazon.awssdk.services.s3.model.ListBucketsRequest;
 import software.amazon.awssdk.services.s3.model.ListObjectsV2Request;
 
@@ -50,7 +50,6 @@ import static com.telenav.kivakit.core.ensure.Ensure.unsupported;
  * @author jonathanl (shibo)
  */
 @UmlClassDiagram(diagram = DiagramS3.class)
-@LexakaiJavadoc(complete = true)
 public class S3Folder extends S3FileSystemObject implements FolderService
 {
     private static final Logger LOGGER = LoggerFactory.newLogger();
@@ -166,7 +165,7 @@ public class S3Folder extends S3FileSystemObject implements FolderService
     }
 
     @Override
-    public List<FileService> files(Matcher<FilePath> matcher)
+    public List<FileService> files(@NotNull Matcher<FilePath> matcher)
     {
         List<FileService> files = new ArrayList<>();
         for (var file : files())
@@ -180,13 +179,13 @@ public class S3Folder extends S3FileSystemObject implements FolderService
     }
 
     @Override
-    public S3Folder folder(FileName name)
+    public S3Folder folder(@NotNull FileName name)
     {
         return new S3Folder(FilePath.parseFilePath(this, child(name).toString()));
     }
 
     @Override
-    public S3Folder folder(Folder folder)
+    public S3Folder folder(@NotNull Folder folder)
     {
         return new S3Folder(FilePath.parseFilePath(this, child(folder).toString()));
     }
@@ -249,6 +248,7 @@ public class S3Folder extends S3FileSystemObject implements FolderService
         return false;
     }
 
+    @SuppressWarnings("SpellCheckingInspection")
     @Override
     public S3Folder mkdirs()
     {
@@ -256,7 +256,7 @@ public class S3Folder extends S3FileSystemObject implements FolderService
     }
 
     @Override
-    public List<FileService> nestedFiles(Matcher<FilePath> matcher)
+    public List<FileService> nestedFiles(@NotNull Matcher<FilePath> matcher)
     {
         List<FileService> files = new ArrayList<>();
         for (var file : nestedFiles(this, new ArrayList<>()))
@@ -270,7 +270,7 @@ public class S3Folder extends S3FileSystemObject implements FolderService
     }
 
     @Override
-    public List<FolderService> nestedFolders(Matcher<FilePath> matcher)
+    public List<FolderService> nestedFolders(@NotNull Matcher<FilePath> matcher)
     {
         List<FolderService> folders = new ArrayList<>();
         for (var at : nestedFolders(this, new ArrayList<>()))
@@ -284,7 +284,7 @@ public class S3Folder extends S3FileSystemObject implements FolderService
     }
 
     @Override
-    public boolean renameTo(FolderService that)
+    public boolean renameTo(@NotNull FolderService that)
     {
         if (isOnSameFileSystem(that))
         {

@@ -20,13 +20,13 @@ package com.telenav.kivakit.filesystem.java;
 
 import com.telenav.kivakit.component.ComponentMixin;
 import com.telenav.kivakit.filesystem.File;
+import com.telenav.kivakit.filesystem.FilePath;
 import com.telenav.kivakit.filesystem.Folder;
 import com.telenav.kivakit.filesystem.spi.DiskService;
 import com.telenav.kivakit.filesystem.spi.FileService;
 import com.telenav.kivakit.filesystem.spi.FileSystemService;
 import com.telenav.kivakit.filesystem.spi.FolderService;
 import com.telenav.kivakit.resource.Resource;
-import com.telenav.kivakit.filesystem.FilePath;
 import org.jetbrains.annotations.NotNull;
 
 import java.nio.file.Paths;
@@ -80,7 +80,7 @@ public class JavaFileSystemService implements
     }
 
     @Override
-    public @NotNull DiskService diskService(FilePath path)
+    public @NotNull DiskService diskService(@NotNull FilePath path)
     {
         return unsupported();
     }

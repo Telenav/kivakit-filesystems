@@ -28,11 +28,10 @@ import com.telenav.kivakit.filesystem.spi.FolderService;
 import com.telenav.kivakit.interfaces.comparison.Matcher;
 import com.telenav.kivakit.resource.FileName;
 import com.telenav.lexakai.annotations.LexakaiJavadoc;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.List;
-
-import static com.telenav.kivakit.core.ensure.Ensure.unsupported;
 
 /**
  * <b>Not public API</b>
@@ -41,7 +40,6 @@ import static com.telenav.kivakit.core.ensure.Ensure.unsupported;
  *
  * @author jonathanl (shibo)
  */
-@LexakaiJavadoc(complete = true)
 public class GitHubFolder extends GitHubFileSystemObject implements FolderService
 {
     public GitHubFolder(FilePath path)
@@ -84,13 +82,13 @@ public class GitHubFolder extends GitHubFileSystemObject implements FolderServic
     }
 
     @Override
-    public GitHubFolder folder(FileName name)
+    public GitHubFolder folder(@NotNull FileName name)
     {
         return new GitHubFolder(FilePath.parseFilePath(this, child(name).toString()));
     }
 
     @Override
-    public GitHubFolder folder(Folder folder)
+    public GitHubFolder folder(@NotNull Folder folder)
     {
         return new GitHubFolder(FilePath.parseFilePath(this, child(folder).toString()));
     }
@@ -125,7 +123,7 @@ public class GitHubFolder extends GitHubFileSystemObject implements FolderServic
     }
 
     @Override
-    public List<FileService> nestedFiles(Matcher<FilePath> matcher)
+    public List<FileService> nestedFiles(@NotNull Matcher<FilePath> matcher)
     {
         var files = new ArrayList<FileService>();
         for (var entry : tree().entries(relativePath().asUnixString(), GitHubTree.EntryType.FILE, true))
@@ -136,7 +134,7 @@ public class GitHubFolder extends GitHubFileSystemObject implements FolderServic
     }
 
     @Override
-    public List<FolderService> nestedFolders(Matcher<FilePath> matcher)
+    public List<FolderService> nestedFolders(@NotNull Matcher<FilePath> matcher)
     {
         var folders = new ArrayList<FolderService>();
         for (var entry : tree().entries(relativePath().asUnixString(), GitHubTree.EntryType.FOLDER, true))

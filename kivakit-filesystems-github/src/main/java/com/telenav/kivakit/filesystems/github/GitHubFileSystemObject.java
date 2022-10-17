@@ -18,37 +18,34 @@
 
 package com.telenav.kivakit.filesystems.github;
 
-import com.telenav.kivakit.core.language.Hash;
-import com.telenav.kivakit.core.language.Objects;
-import com.telenav.kivakit.core.logging.Logger;
-import com.telenav.kivakit.core.logging.LoggerFactory;
+import com.telenav.kivakit.core.ensure.EnsureTrait;
 import com.telenav.kivakit.core.progress.ProgressReporter;
 import com.telenav.kivakit.core.string.Strings;
-import com.telenav.kivakit.core.string.Strip;
 import com.telenav.kivakit.core.value.count.Bytes;
+import com.telenav.kivakit.filesystem.FilePath;
 import com.telenav.kivakit.filesystem.spi.FileSystemObjectService;
 import com.telenav.kivakit.filesystem.spi.FolderService;
 import com.telenav.kivakit.resource.CopyMode;
 import com.telenav.kivakit.resource.Resource;
-import com.telenav.kivakit.filesystem.FilePath;
 import com.telenav.kivakit.resource.writing.BaseWritableResource;
 import com.telenav.lexakai.annotations.LexakaiJavadoc;
+import org.jetbrains.annotations.NotNull;
 import org.kohsuke.github.GHTreeEntry;
 
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.regex.Pattern;
 
-import static com.telenav.kivakit.core.ensure.Ensure.ensure;
-import static com.telenav.kivakit.core.ensure.Ensure.unsupported;
+import static com.telenav.kivakit.core.language.Hash.hashMany;
+import static com.telenav.kivakit.core.language.Objects.areEqualPairs;
+import static com.telenav.kivakit.core.string.Strip.stripLeading;
 
 /**
  * Base functionality common to both {@link GitHubFile} and {@link GitHubFolder}.
  *
  * @author jonathanl (shibo)
  */
-@LexakaiJavadoc(complete = true)
-public abstract class GitHubFileSystemObject extends BaseWritableResource implements FileSystemObjectService
+public abstract class GitHubFileSystemObject extends BaseWritableResource implements FileSystemObjectService, EnsureTrait
 {
     // Parses URLs like: github://Telenav/kivakit/develop/<path>?/filename
     private static final Pattern URL_PATTERN = Pattern.compile("(?<scheme>github):/" +
@@ -58,8 +55,6 @@ public abstract class GitHubFileSystemObject extends BaseWritableResource implem
             "(?<path>(/[A-Za-z0-9_.-]+)*?)" +
             "(?<filename>(/[A-Za-z0-9_.-]*)?)"
     );
-
-    private static final Logger LOGGER = LoggerFactory.newLogger();
 
     public static boolean accepts(String path)
     {
@@ -94,8 +89,8 @@ public abstract class GitHubFileSystemObject extends BaseWritableResource implem
             accessToken = matcher.group("accessToken");
             repositoryName = matcher.group("repository");
             branchName = matcher.group("branch");
-            path = Strip.leading(matcher.group("path"), "/");
-            fileName = Strip.leading(matcher.group("filename"), "/");
+            path = stripLeading(matcher.group("path"), "/");
+            fileName = stripLeading(matcher.group("filename"), "/");
 
             ensure(userName.length() <= 39, "GitHub username is too long: $", userName);
             ensure(!userName.contains("--"), "GitHub username cannot contain consecutive hyphens");
@@ -111,12 +106,12 @@ public abstract class GitHubFileSystemObject extends BaseWritableResource implem
         }
         else
         {
-            LOGGER.illegalArgument("Invalid GitHub path: $", path);
+            illegalArgument("Invalid GitHub path: $", path);
         }
     }
 
     @Override
-    public void copyFrom(Resource resource, CopyMode mode, ProgressReporter reporter)
+    public void copyFrom(@NotNull Resource resource, @NotNull CopyMode mode, @NotNull ProgressReporter reporter)
     {
     }
 
@@ -132,7 +127,7 @@ public abstract class GitHubFileSystemObject extends BaseWritableResource implem
         if (o instanceof GitHubFileSystemObject)
         {
             var that = (GitHubFileSystemObject) o;
-            return Objects.equalPairs
+            return areEqualPairs
                     (
                             scheme, that.scheme,
                             userName, that.userName,
@@ -153,7 +148,7 @@ public abstract class GitHubFileSystemObject extends BaseWritableResource implem
     @Override
     public int hashCode()
     {
-        return Hash.many(scheme, userName, repositoryName, branchName, path, fileName);
+        return hashMany(scheme, userName, repositoryName, branchName, path, fileName);
     }
 
     @Override
@@ -228,7 +223,7 @@ public abstract class GitHubFileSystemObject extends BaseWritableResource implem
 
     protected GHTreeEntry entry()
     {
-        var path = Strings.isEmpty(this.path) ? fileName : this.path + "/" + fileName;
+        var path = Strings.isNullOrBlank(this.path) ? fileName : this.path + "/" + fileName;
         var entry = tree().entry(path);
         ensure(entry != null, "No entry for $", path);
         return entry;

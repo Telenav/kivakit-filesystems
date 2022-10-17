@@ -47,7 +47,6 @@ import static com.telenav.kivakit.core.ensure.Ensure.unsupported;
  * @see File
  * @see Folder
  */
-@LexakaiJavadoc(complete = true)
 public class GitHubFileSystemService implements FileSystemService
 {
     @Override
@@ -57,21 +56,21 @@ public class GitHubFileSystemService implements FileSystemService
     }
 
     @Override
-    public @NotNull DiskService diskService(FilePath path)
+    public @NotNull DiskService diskService(@NotNull FilePath path)
     {
         return unsupported();
     }
 
     @Override
     @UmlRelation(label = "provides")
-    public @NotNull GitHubFile fileService(FilePath path)
+    public @NotNull GitHubFile fileService(@NotNull FilePath path)
     {
         return new GitHubFile(path);
     }
 
     @Override
     @UmlRelation(label = "provides")
-    public @NotNull GitHubFolder folderService(FilePath path)
+    public @NotNull GitHubFolder folderService(@NotNull FilePath path)
     {
         return new GitHubFolder(path);
     }

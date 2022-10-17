@@ -24,12 +24,16 @@ import com.telenav.kivakit.core.value.count.Bytes;
 import com.telenav.kivakit.filesystem.FilePath;
 import com.telenav.kivakit.filesystem.spi.FileService;
 import com.telenav.lexakai.annotations.LexakaiJavadoc;
+import org.jetbrains.annotations.NotNull;
 
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.nio.file.attribute.PosixFilePermission;
 
 import static com.telenav.kivakit.core.ensure.Ensure.unsupported;
+import static com.telenav.kivakit.core.messaging.Listener.consoleListener;
+import static com.telenav.kivakit.core.value.count.Bytes.bytes;
+import static com.telenav.kivakit.filesystem.FilePath.parseFilePath;
 
 /**
  * <b>Not public API</b>
@@ -38,6 +42,7 @@ import static com.telenav.kivakit.core.ensure.Ensure.unsupported;
  *
  * @author jonathanl (shibo)
  */
+@SuppressWarnings("unused")
 @LexakaiJavadoc(complete = true)
 public class GitHubFile extends GitHubFileSystemObject implements FileService
 {
@@ -48,7 +53,7 @@ public class GitHubFile extends GitHubFileSystemObject implements FileService
 
     public GitHubFile(String path)
     {
-        super(FilePath.parseFilePath(Listener.consoleListener(), path));
+        super(parseFilePath(consoleListener(), path));
     }
 
     @Override
@@ -101,7 +106,7 @@ public class GitHubFile extends GitHubFileSystemObject implements FileService
     }
 
     @Override
-    public boolean renameTo(FileService that)
+    public boolean renameTo(@NotNull FileService that)
     {
         return unsupported();
     }
@@ -115,6 +120,6 @@ public class GitHubFile extends GitHubFileSystemObject implements FileService
     @Override
     Bytes length()
     {
-        return Bytes.bytes(entry().getSize());
+        return bytes(entry().getSize());
     }
 }
