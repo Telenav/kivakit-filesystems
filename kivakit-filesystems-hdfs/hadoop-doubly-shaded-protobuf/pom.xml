@@ -28,7 +28,7 @@
     -->
 
     <artifactId>hadoop-doubly-shaded-protobuf</artifactId>
-    <version>1.7.1-SNAPSHOT</version>
+    <version>1.8.1-SNAPSHOT</version>
 
     <properties>
         <enforcer.skip>true</enforcer.skip>
