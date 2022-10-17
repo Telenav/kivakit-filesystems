@@ -18,11 +18,11 @@
 
 package com.telenav.kivakit.filesystems.s3fs;
 
-import com.telenav.kivakit.testing.UnitTest;
+import com.telenav.kivakit.filesystem.FilePath;
 import com.telenav.kivakit.filesystem.Folder;
 import com.telenav.kivakit.filesystem.spi.FolderService;
 import com.telenav.kivakit.resource.FileName;
-import com.telenav.kivakit.filesystem.FilePath;
+import com.telenav.kivakit.testing.UnitTest;
 import org.jetbrains.annotations.NotNull;
 import org.junit.Test;
 
@@ -61,7 +61,7 @@ public class S3ParsingTest extends UnitTest
     public void testFileParent()
     {
         FolderService folder = file.parentService();
-        ensure("docs".equals(folder.baseName().toString()));
+        ensure("docs".equals(folder.baseFileName().toString()));
         ensure(("s3://default-region/kivakit/" + kivakit().projectVersion() + "/docs").equals(folder.path().toString()));
     }
 
@@ -158,7 +158,6 @@ public class S3ParsingTest extends UnitTest
     }
 
     @NotNull
-    @SuppressWarnings("SpellCheckingInspection")
     private String apidocs()
     {
         return kivakit().projectVersion() + "/docs/index.html";

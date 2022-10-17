@@ -34,8 +34,8 @@ public class S3FileTest extends UnitTest
     @Before
     public void beforeMethod()
     {
-        assumeTrue(systemProperty("AWS_ACCESS_KEY_ID") != null);
-        assumeTrue(systemProperty("AWS_SECRET_ACCESS_KEY") != null);
+        assumeTrue(systemPropertyOrEnvironmentVariable("AWS_ACCESS_KEY_ID") != null);
+        assumeTrue(systemPropertyOrEnvironmentVariable("AWS_SECRET_ACCESS_KEY") != null);
     }
 
     @Test

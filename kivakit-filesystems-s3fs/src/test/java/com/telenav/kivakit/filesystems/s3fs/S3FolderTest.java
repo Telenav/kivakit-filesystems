@@ -18,16 +18,17 @@
 
 package com.telenav.kivakit.filesystems.s3fs;
 
-import com.telenav.kivakit.testing.SlowTest;
-import com.telenav.kivakit.testing.UnitTest;
 import com.telenav.kivakit.filesystem.Folder;
 import com.telenav.kivakit.filesystem.spi.FolderService;
 import com.telenav.kivakit.resource.FileName;
+import com.telenav.kivakit.testing.SlowTest;
+import com.telenav.kivakit.testing.UnitTest;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.experimental.categories.Category;
 
+import static com.telenav.kivakit.resource.FileName.fileNameForDateTime;
 import static org.junit.Assume.assumeTrue;
 
 @Category({ SlowTest.class })
@@ -42,8 +43,8 @@ public class S3FolderTest extends UnitTest
     @Before
     public void beforeMethod()
     {
-        assumeTrue(systemProperty("AWS_ACCESS_KEY_ID") != null);
-        assumeTrue(systemProperty("AWS_SECRET_ACCESS_KEY") != null);
+        assumeTrue(systemPropertyOrEnvironmentVariable("AWS_ACCESS_KEY_ID") != null);
+        assumeTrue(systemPropertyOrEnvironmentVariable("AWS_SECRET_ACCESS_KEY") != null);
     }
 
     @Test
@@ -73,7 +74,7 @@ public class S3FolderTest extends UnitTest
     @Test
     public void testRename()
     {
-        var folder = Folder.parseFolder(this, "s3://default-region/kivakit/test-data/old-" + FileName.dateTime());
+        var folder = Folder.parseFolder(this, "s3://default-region/kivakit/test-data/old-" + FileName.fileNameForDateTime());
         assert folder != null;
         folder.mkdirs();
         var file = folder.file(FileName.parseFileName(this, "tmp.txt"));
@@ -81,7 +82,7 @@ public class S3FolderTest extends UnitTest
         printWriter.println("for test");
         printWriter.close();
 
-        var that = folder.parent().folder(FileName.dateTime());
+        var that = folder.parent().folder(fileNameForDateTime());
         folder.renameTo(that);
         ensure(that.exists());
         ensure(!folder.exists());

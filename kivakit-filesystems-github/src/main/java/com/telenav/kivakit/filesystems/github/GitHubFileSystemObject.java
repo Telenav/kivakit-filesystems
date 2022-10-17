@@ -28,7 +28,6 @@ import com.telenav.kivakit.filesystem.spi.FolderService;
 import com.telenav.kivakit.resource.CopyMode;
 import com.telenav.kivakit.resource.Resource;
 import com.telenav.kivakit.resource.writing.BaseWritableResource;
-import com.telenav.lexakai.annotations.LexakaiJavadoc;
 import org.jetbrains.annotations.NotNull;
 import org.kohsuke.github.GHTreeEntry;
 

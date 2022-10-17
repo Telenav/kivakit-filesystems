@@ -1,18 +1,23 @@
 package com.telenav.kivakit.filesystem.java;
 
-import com.telenav.kivakit.core.string.Strings;
-import com.telenav.kivakit.testing.UnitTest;
-import com.telenav.kivakit.filesystem.File;
-import com.telenav.kivakit.filesystem.Folder;
+import com.telenav.kivakit.filesystem.FilePath;
 import com.telenav.kivakit.interfaces.comparison.Matcher;
 import com.telenav.kivakit.resource.compression.archive.ZipArchive;
-import com.telenav.kivakit.resource.Extension;
-import com.telenav.kivakit.filesystem.FilePath;
 import com.telenav.kivakit.resource.resources.StringResource;
+import com.telenav.kivakit.testing.UnitTest;
 import org.junit.Test;
 
 import java.util.HashSet;
 import java.util.Set;
+
+import static com.telenav.kivakit.core.string.Formatter.format;
+import static com.telenav.kivakit.filesystem.File.temporaryFile;
+import static com.telenav.kivakit.filesystem.FilePath.parseFilePath;
+import static com.telenav.kivakit.filesystem.Folder.parseFolder;
+import static com.telenav.kivakit.resource.Extension.TXT;
+import static com.telenav.kivakit.resource.Extension.ZIP;
+import static com.telenav.kivakit.resource.compression.archive.ZipArchive.AccessMode.WRITE;
+import static com.telenav.kivakit.resource.compression.archive.ZipArchive.zipArchive;
 
 public class JavaFolderTest extends UnitTest
 {
@@ -21,7 +26,7 @@ public class JavaFolderTest extends UnitTest
         @Override
         public boolean matches(FilePath path)
         {
-            return path.hasExtension(Extension.TXT);
+            return path.hasExtension(TXT);
         }
     }
 
@@ -29,8 +34,8 @@ public class JavaFolderTest extends UnitTest
     public void test()
     {
         var archive = archive();
-        var path = Strings.format("jar:file:$/$", archive, "child");
-        var folder = new JavaFolder(FilePath.parseFilePath(this, path));
+        var path = format("jar:file:$/$", archive, "child");
+        var folder = new JavaFolder(parseFilePath(this, path));
 
         ensure(folder.isFolder());
         ensureFalse(folder.isEmpty());
@@ -48,7 +53,7 @@ public class JavaFolderTest extends UnitTest
     public void testIntegration()
     {
         var archive = archive();
-        var folder = listenTo(Folder.parseFolder(this, Strings.format("java:jar:file:$", archive)));
+        var folder = listenTo(parseFolder(this, format("java:jar:file:$", archive)));
         ensureEqual(folder.files().size(), 1);
         ensureEqual(folder.folders().size(), 1);
         var files = new HashSet<>();
@@ -60,7 +65,7 @@ public class JavaFolderTest extends UnitTest
     public void testIntegrationChild()
     {
         var archive = archive();
-        var folder = listenTo(Folder.parseFolder(this, Strings.format("java:jar:file:$/child", archive)));
+        var folder = listenTo(parseFolder(this, format("java:jar:file:$/child", archive)));
         ensureEqual(folder.files().size(), 2);
         var files = new HashSet<>();
         files.add(folder.files().get(0).fileName().name());
@@ -70,8 +75,8 @@ public class JavaFolderTest extends UnitTest
 
     private ZipArchive archive()
     {
-        var zip = File.temporary(Extension.ZIP);
-        var archive = ZipArchive.open(this, zip, ZipArchive.Mode.WRITE);
+        var zip = temporaryFile(ZIP);
+        var archive = zipArchive(this, zip, WRITE);
         if (archive != null)
         {
             archive.save("/child/a.txt", new StringResource("a"));

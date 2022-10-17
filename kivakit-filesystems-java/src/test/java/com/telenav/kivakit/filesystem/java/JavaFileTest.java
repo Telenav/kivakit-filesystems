@@ -1,15 +1,19 @@
 package com.telenav.kivakit.filesystem.java;
 
-import com.telenav.kivakit.core.string.Strings;
-import com.telenav.kivakit.testing.UnitTest;
 import com.telenav.kivakit.core.value.count.Bytes;
 import com.telenav.kivakit.filesystem.File;
-import com.telenav.kivakit.filesystem.Folder;
-import com.telenav.kivakit.resource.compression.archive.ZipArchive;
 import com.telenav.kivakit.resource.Extension;
-import com.telenav.kivakit.filesystem.FilePath;
+import com.telenav.kivakit.resource.compression.archive.ZipArchive;
+import com.telenav.kivakit.testing.UnitTest;
 import org.jetbrains.annotations.NotNull;
 import org.junit.Test;
+
+import static com.telenav.kivakit.core.string.Formatter.format;
+import static com.telenav.kivakit.filesystem.File.temporaryFile;
+import static com.telenav.kivakit.filesystem.FilePath.parseFilePath;
+import static com.telenav.kivakit.filesystem.Folders.kivakitTemporaryFolder;
+import static com.telenav.kivakit.resource.compression.archive.ZipArchive.AccessMode.WRITE;
+import static com.telenav.kivakit.resource.compression.archive.ZipArchive.zipArchive;
 
 public class JavaFileTest extends UnitTest
 {
@@ -17,8 +21,8 @@ public class JavaFileTest extends UnitTest
     public void test()
     {
         var archive = archive(file("test-integration.txt", "output"));
-        var path = Strings.format("jar:file:$/$", archive, "test-integration.txt");
-        var file = new JavaFile(FilePath.parseFilePath(this, path));
+        var path = format("jar:file:$/$", archive, "test-integration.txt");
+        var file = new JavaFile(parseFilePath(this, path));
 
         ensure(file.exists());
         ensure(file.sizeInBytes().isGreaterThan(Bytes._0));
@@ -29,14 +33,14 @@ public class JavaFileTest extends UnitTest
     public void testIntegration()
     {
         var archive = archive(file("test-integration.txt", "output"));
-        var path = Strings.format("java:jar:file:$/$", archive, file("test-integration.txt", "output").fileName().name());
+        var path = format("java:jar:file:$/$", archive, file("test-integration.txt", "output").fileName().name());
         ensureEqual(listenTo(File.parseFile(this, path)).reader().asString(), "output");
     }
 
     private ZipArchive archive(File file)
     {
-        var zip = File.temporary(Extension.ZIP);
-        var archive = ZipArchive.open(this, zip, ZipArchive.Mode.WRITE);
+        var zip = temporaryFile(Extension.ZIP);
+        var archive = zipArchive(this, zip, WRITE);
         if (archive != null)
         {
             archive.save(file.fileName().name(), file);
@@ -45,13 +49,15 @@ public class JavaFileTest extends UnitTest
         return archive;
     }
 
+    @SuppressWarnings("SameParameterValue")
     @NotNull
     private File file(String name, String output)
     {
-        return listenTo(Folder.kivakitTemporary()
+        var file = listenTo(kivakitTemporaryFolder()
                 .folder("java-file-test")
                 .mkdirs()
-                .file(name)
-                .print(output));
+                .file(name));
+        file.writer().saveText(output);
+        return file;
     }
 }

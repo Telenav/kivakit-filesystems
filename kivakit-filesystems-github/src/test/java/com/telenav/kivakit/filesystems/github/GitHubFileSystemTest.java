@@ -1,12 +1,13 @@
 package com.telenav.kivakit.filesystems.github;
 
-import com.telenav.kivakit.testing.UnitTest;
 import com.telenav.kivakit.interfaces.comparison.Filter;
 import com.telenav.kivakit.resource.FileName;
+import com.telenav.kivakit.testing.UnitTest;
 import org.junit.Ignore;
 import org.junit.Test;
 
 import static com.telenav.kivakit.core.value.count.Bytes.bytes;
+import static com.telenav.kivakit.interfaces.comparison.Filter.acceptAll;
 
 /**
  * Test for GitHub filesystem.
@@ -42,7 +43,7 @@ public class GitHubFileSystemTest extends UnitTest
     public void testNestedFiles()
     {
         var folder = listenTo(new GitHubFolder("github://Telenav/lexakai/develop"));
-        var files = folder.nestedFiles(Filter.all());
+        var files = folder.nestedFiles(acceptAll());
         ensure(!files.isEmpty());
         ensure(files.contains(folder.file(FileName.parseFileName(this, "README.md"))));
         ensure(files.contains(folder.file(FileName.parseFileName(this, "pom.xml"))));
@@ -53,7 +54,7 @@ public class GitHubFileSystemTest extends UnitTest
     public void testNestedFolders()
     {
         var folder = listenTo(new GitHubFolder("github://Telenav/lexakai/develop"));
-        var folders = folder.nestedFolders(Filter.all());
+        var folders = folder.nestedFolders(Filter.acceptAll());
         ensure(!folders.isEmpty());
         ensure(folders.contains(folder.folder(FileName.parseFileName(this, "documentation"))));
         ensure(folders.contains(folder.folder(FileName.parseFileName(this, "legal"))));

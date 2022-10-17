@@ -18,10 +18,9 @@
 
 package com.telenav.kivakit.filesystems.s3fs;
 
-import com.telenav.kivakit.core.progress.ProgressReporter;
+import com.telenav.kivakit.resource.FileName;
 import com.telenav.kivakit.testing.SlowTest;
 import com.telenav.kivakit.testing.UnitTest;
-import com.telenav.kivakit.resource.FileName;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.experimental.categories.Category;
@@ -34,8 +33,8 @@ public class S3FileSystemServiceTest extends UnitTest
     @Before
     public void beforeMethod()
     {
-        assumeTrue(systemProperty("AWS_ACCESS_KEY_ID") != null);
-        assumeTrue(systemProperty("AWS_SECRET_ACCESS_KEY") != null);
+        assumeTrue(systemPropertyOrEnvironmentVariable("AWS_ACCESS_KEY_ID") != null);
+        assumeTrue(systemPropertyOrEnvironmentVariable("AWS_SECRET_ACCESS_KEY") != null);
     }
 
     @Test
@@ -53,7 +52,7 @@ public class S3FileSystemServiceTest extends UnitTest
             printWriter.println("the 3rd test case for s3 output stream");
             printWriter.close();
 
-            for (String line : file2.reader().lines(ProgressReporter.none()))
+            for (String line : file2.reader().readLines())
             {
                 System.out.println(line);
                 break;
