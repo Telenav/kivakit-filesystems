@@ -1,56 +1,37 @@
 [//]: # (start-user-text)
 
-<a href="https://www.kivakit.org">
-<img src="https://telenav.github.io/telenav-assets/images/icons/web-32.png" srcset="https://telenav.github.io/telenav-assets/images/icons/web-32-2x.png 2x"/>
-</a>
-&nbsp;
-<a href="https://twitter.com/openkivakit">
-<img src="https://telenav.github.io/telenav-assets/images/logos/twitter/twitter-32.png" srcset="https://telenav.github.io/telenav-assets/images/logos/twitter/twitter-32-2x.png 2x"/>
-</a>
-&nbsp;
-<a href="https://kivakit.zulipchat.com">
-<img src="https://telenav.github.io/telenav-assets/images/logos/zulip/zulip-32.png" srcset="https://telenav.github.io/telenav-assets/images/logos/zulip/zulip-32-2x.png 2x"/>
-</a>
+
 
 [//]: # (end-user-text)
 
-# kivakit-filesystems &nbsp;&nbsp; <img src="https://telenav.github.io/telenav-assets/images/icons/folder-32.png" srcset="https://telenav.github.io/telenav-assets/images/icons/folder-32-2x.png 2x"/>
+# kivakit-hdfs-filesystem &nbsp;&nbsp; <img src="https://telenav.github.io/telenav-assets/images/icons/disks-32.png" srcset="https://telenav.github.io/telenav-assets/images/icons/disks-32-2x.png 2x"/>
 
-This project contains filesystem service providers for the service provider interface in *kivakit-resource*.
+Service provider for HDFS filesystem.
 
 <img src="https://telenav.github.io/telenav-assets/images/separators/horizontal-line-512.png" srcset="https://telenav.github.io/telenav-assets/images/separators/horizontal-line-512-2x.png 2x"/>
 
 [//]: # (start-user-text)
 
-### Summary <a name = "summary"></a>
 
-To use the [hdfs](hdfs/README.md), [s3fs](kivakit-filesystems-s3fs/README.md) or [github](kivakit-filesystems-github/README.md) providers with the KivaKit resource mini-framework, all that is required is to add the appropriate dependency to *pom.xml* and add an *import* statement to module-info.java.
-
-See [filesystem](https://github.com/Telenav/kivakit/blob/release/current/kivakit/resource/documentation/diagrams/com.telenav.kivakit.filesystem.spi.svg)
-and [resource](https://github.com/Telenav/kivakit/blob/release/current/kivakit/resource/documentation/diagrams/com.telenav.kivakit.resource.svg)
-UML diagrams as well as  [FileSystem](https://telenav.github.io/kivakit/javadoc/kivakit.resource/com/telenav/kivakit/filesystem/spi/FileSystemService.html)
-and [FileSystemServiceLoader](https://telenav.github.io/kivakit/javadoc/kivakit.resource/com/telenav/kivakit/filesystem/loader/FileSystemServiceLoader.html)
-classes.
 
 [//]: # (end-user-text)
 
 ### Sub-Projects <a name = "projects"></a> &nbsp; <img src="https://telenav.github.io/telenav-assets/images/icons/diagram-32.png" srcset="https://telenav.github.io/telenav-assets/images/icons/diagram-32-2x.png 2x"/>
 
-[**kivakit-filesystems-hdfs**](kivakit-filesystems-hdfs/README.md)  
-[**kivakit-filesystems-github**](kivakit-filesystems-github/README.md)  
-[**kivakit-filesystems-java**](kivakit-filesystems-java/README.md)  
-[**kivakit-filesystems-s3fs**](kivakit-filesystems-s3fs/README.md)  
+[**kivakit-hdfs-filesystem-hdfs**](hdfs/README.md)  
+[**kivakit-hdfs-filesystem-hdfs-proxy**](hdfs-proxy/README.md)  
+[**kivakit-hdfs-filesystem-hdfs-proxy-spi**](hdfs-proxy-spi/README.md)  
 
 <img src="https://telenav.github.io/telenav-assets/images/separators/horizontal-line-128.png" srcset="https://telenav.github.io/telenav-assets/images/separators/horizontal-line-128-2x.png 2x"/>
 
 ### Javadoc Coverage <a name = "javadoc-coverage"></a> &nbsp; <img src="https://telenav.github.io/telenav-assets/images/icons/bargraph-24.png" srcset="https://telenav.github.io/telenav-assets/images/icons/bargraph-24-2x.png 2x"/>
 
-&nbsp; <img src="https://telenav.github.io/telenav-assets/images/meters/meter-70-96.png" srcset="https://telenav.github.io/telenav-assets/images/meters/meter-70-96-2x.png 2x"/>
- &nbsp; &nbsp; [**kivakit-filesystems-github**](kivakit-filesystems-github/README.md)  
-&nbsp; <img src="https://telenav.github.io/telenav-assets/images/meters/meter-70-96.png" srcset="https://telenav.github.io/telenav-assets/images/meters/meter-70-96-2x.png 2x"/>
- &nbsp; &nbsp; [**kivakit-filesystems-java**](kivakit-filesystems-java/README.md)  
 &nbsp; <img src="https://telenav.github.io/telenav-assets/images/meters/meter-80-96.png" srcset="https://telenav.github.io/telenav-assets/images/meters/meter-80-96-2x.png 2x"/>
- &nbsp; &nbsp; [**kivakit-filesystems-s3fs**](kivakit-filesystems-s3fs/README.md)
+ &nbsp; &nbsp; [**kivakit-hdfs-filesystem-hdfs**](hdfs/README.md)  
+&nbsp; <img src="https://telenav.github.io/telenav-assets/images/meters/meter-60-96.png" srcset="https://telenav.github.io/telenav-assets/images/meters/meter-60-96-2x.png 2x"/>
+ &nbsp; &nbsp; [**kivakit-hdfs-filesystem-hdfs-proxy**](hdfs-proxy/README.md)  
+&nbsp; <img src="https://telenav.github.io/telenav-assets/images/meters/meter-80-96.png" srcset="https://telenav.github.io/telenav-assets/images/meters/meter-80-96-2x.png 2x"/>
+ &nbsp; &nbsp; [**kivakit-hdfs-filesystem-hdfs-proxy-spi**](hdfs-proxy-spi/README.md)
 
 [//]: # (start-user-text)
 

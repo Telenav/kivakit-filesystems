@@ -7,30 +7,31 @@
 //
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 -->
-
-<project xmlns:xsi = "http://www.w3.org/2001/XMLSchema-instance"
-         xmlns = "http://maven.apache.org/POM/4.0.0"
-         xsi:schemaLocation = "http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project
+    xmlns:xsi = "http://www.w3.org/2001/XMLSchema-instance"
+    xmlns = "http://maven.apache.org/POM/4.0.0"
+    xsi:schemaLocation = "http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 
     <modelVersion>4.0.0</modelVersion>
 
     <parent>
         <groupId>com.telenav</groupId>
-        <artifactId>telenav-superpom-project-family</artifactId>
-        <version>2.0.3</version>
+        <artifactId>telenav-superpom-intermediate-bom</artifactId>
+        <version>2.0.2</version>
         <relativePath/>
     </parent>
 
     <groupId>com.telenav.kivakit</groupId>
-    <artifactId>kivakit-filesystems</artifactId>
+    <artifactId>kivakit-hdfs-filesystem</artifactId>
     <version>1.8.1-SNAPSHOT</version>
 
     <packaging>pom</packaging>
 
     <modules>
-        <module>kivakit-filesystems-github</module>
-        <module>kivakit-filesystems-s3fs</module>
-        <module>kivakit-filesystems-java</module>
+        <module>hdfs-proxy-spi</module>
+        <module>hadoop-doubly-shaded-protobuf</module>
+        <module>hdfs-proxy</module>
+        <module>hdfs</module>
     </modules>
 
 </project>
