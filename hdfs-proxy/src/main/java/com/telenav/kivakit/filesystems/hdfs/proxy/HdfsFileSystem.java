@@ -19,12 +19,11 @@
 package com.telenav.kivakit.filesystems.hdfs.proxy;
 
 import com.telenav.kivakit.component.BaseComponent;
-import com.telenav.kivakit.core.language.object.ObjectFormatter;
-import com.telenav.kivakit.core.language.reflection.property.KivaKitIncludeProperty;
 import com.telenav.kivakit.core.logging.Logger;
 import com.telenav.kivakit.core.logging.LoggerFactory;
 import com.telenav.kivakit.core.messaging.Debug;
 import com.telenav.kivakit.core.registry.InstanceIdentifier;
+import com.telenav.kivakit.core.string.ObjectFormatter;
 import com.telenav.kivakit.filesystem.File;
 import com.telenav.kivakit.filesystem.FilePath;
 import com.telenav.kivakit.filesystem.Folder;

@@ -59,7 +59,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import static com.telenav.kivakit.core.collections.set.ObjectSet.objectSet;
 import static com.telenav.kivakit.core.ensure.Ensure.fail;
 import static com.telenav.kivakit.resource.FileName.parseFileName;
 
@@ -468,7 +467,7 @@ public class HdfsProxyServer extends Server implements com.telenav.kivakit.files
     @Override
     protected ObjectSet<SwitchParser<?>> switchParsers()
     {
-        return objectSet(
+        return ObjectSet.objectSet(
                 DATA_PORT,
                 RMI_OBJECT_PORT,
                 CONFIGURATION_FOLDER,
