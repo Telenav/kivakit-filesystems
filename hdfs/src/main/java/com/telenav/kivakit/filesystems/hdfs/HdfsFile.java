@@ -81,21 +81,21 @@ public class HdfsFile extends BaseWritableResource implements FileService
     public boolean delete()
     {
         return retry(() -> proxy().deleteFile(pathAsString()))
-                .orDefault(this, false, "Unable to delete $", this);
+                .orDefaultAndProblem(false, "Unable to delete $", this);
     }
 
     @Override
     public boolean exists()
     {
         return retry(() -> proxy().exists(pathAsString()))
-                .orDefault(this, false, "Unable to determine if $ exists", this);
+                .orDefaultAndProblem(false, "Unable to determine if $ exists", this);
     }
 
     @Override
     public boolean isFolder()
     {
         return retry(() -> proxy().isFolder(pathAsString()))
-                .orDefault(this, false, "Unable to determine if $ is a folder", this);
+                .orDefaultAndProblem(false, "Unable to determine if $ is a folder", this);
     }
 
     @Override
@@ -107,35 +107,35 @@ public class HdfsFile extends BaseWritableResource implements FileService
     @Override
     public Boolean isWritable()
     {
-        return retry(() -> proxy().isWritable(pathAsString())).orDefault(this, false, "Unable to determine if $ is writable", this);
+        return retry(() -> proxy().isWritable(pathAsString())).orDefaultAndProblem(false, "Unable to determine if $ is writable", this);
     }
 
     @Override
     public boolean lastModified(Time modified)
     {
         return retry(() -> proxy().lastModified(pathAsString(), modified.milliseconds()))
-                .orDefault(this, false, "Unable to set last modified time of $ to $", this, modified);
+                .orDefaultAndProblem(false, "Unable to set last modified time of $ to $", this, modified);
     }
 
     @Override
-    public Time modifiedAt()
+    public Time lastModified()
     {
         return retry(() -> Time.epochMilliseconds(proxy().lastModified(pathAsString())))
-                .orDefault(this, null, "Unable to get last modified time of $", this);
+                .orDefaultAndProblem(null, "Unable to get last modified time of $", this);
     }
 
     @Override
     public InputStream onOpenForReading()
     {
         return retry(() -> HdfsProxyIO.in(proxy().openForReading(pathAsString())))
-                .orDefault(this, null, "Unable to open $ for reading", this);
+                .orDefaultAndProblem(null, "Unable to open $ for reading", this);
     }
 
     @Override
     public OutputStream onOpenForWriting()
     {
         return retry(() -> HdfsProxyIO.out(proxy().openForWriting(pathAsString())))
-                .orDefault(this, null, "Unable to open $ for writing", this);
+                .orDefaultAndProblem(null, "Unable to open $ for writing", this);
     }
 
     @Override
@@ -168,7 +168,7 @@ public class HdfsFile extends BaseWritableResource implements FileService
     public boolean renameTo(HdfsFile to)
     {
         return retry(() -> proxy().rename(pathAsString(), to.path().toString()))
-                .orDefault(this, false, "Unable to rename $ to $", this, to);
+                .orDefaultAndProblem(false, "Unable to rename $ to $", this, to);
     }
 
     @Override
@@ -186,7 +186,7 @@ public class HdfsFile extends BaseWritableResource implements FileService
             {
                 var length = proxy().length(pathAsString());
                 return length < 0 ? null : Bytes.bytes(length);
-            }).orDefault(this, Bytes._0, "Unable to get size of $", this);
+            }).orDefaultAndProblem(Bytes._0, "Unable to get size of $", this);
         }
         return size;
     }
@@ -213,6 +213,6 @@ public class HdfsFile extends BaseWritableResource implements FileService
 
     private <T> UncheckedCode<T> retry(UncheckedCode<T> code)
     {
-        return Retry.retry(code, 16, Duration.seconds(15), () -> proxy = null);
+        return Retry.retry(this, code, 16, Duration.seconds(15), () -> proxy = null);
     }
 }

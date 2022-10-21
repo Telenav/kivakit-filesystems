@@ -18,7 +18,6 @@
 
 package com.telenav.kivakit.filesystems.hdfs.proxy;
 
-import com.telenav.kivakit.conversion.core.language.object.KivaKitConverted;
 import com.telenav.kivakit.filesystems.hdfs.proxy.converters.UserGroupInformationConverter;
 import com.telenav.kivakit.filesystems.hdfs.proxy.internal.lexakai.DiagramHdfsProxy;
 import com.telenav.kivakit.resource.ResourceFolder;

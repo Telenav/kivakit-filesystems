@@ -19,6 +19,7 @@
 package com.telenav.kivakit.filesystems.hdfs.proxy;
 
 import com.telenav.kivakit.component.BaseComponent;
+import com.telenav.kivakit.core.language.reflection.property.IncludeProperty;
 import com.telenav.kivakit.core.logging.Logger;
 import com.telenav.kivakit.core.logging.LoggerFactory;
 import com.telenav.kivakit.core.messaging.Debug;
@@ -108,7 +109,7 @@ class HdfsFileSystem extends BaseComponent
         return filesystems.computeIfAbsent(cluster(path), ignored -> new HdfsFileSystem(path.root()));
     }
 
-    @KivaKitIncludeProperty
+    @IncludeProperty
     private final FilePath root;
 
     // The HDFS file system
@@ -143,14 +144,14 @@ class HdfsFileSystem extends BaseComponent
         return fail("HDFS path '$' is not valid", path);
     }
 
-    @KivaKitIncludeProperty
+    @IncludeProperty
     FileSystem fileSystem()
     {
         if (fileSystem == null)
         {
             try
             {
-                var instance = InstanceIdentifier.of(root.first());
+                var instance = InstanceIdentifier.instanceIdentifier(root.first());
                 var settings = require(HdfsProxyServerSettings.class, instance);
                 fileSystem = settings.user().doAs((PrivilegedExceptionAction<FileSystem>) () ->
                 {

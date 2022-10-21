@@ -444,7 +444,7 @@ public class HdfsProxyServer extends Server implements com.telenav.kivakit.files
         try
         {
             // Register proxy server settings
-            registerSettingsObject(new HdfsProxyServerSettings()
+            registerSettings(new HdfsProxyServerSettings()
                     .configurationFolder(get(CONFIGURATION_FOLDER))
                     .user(get(USERNAME)));
 
@@ -467,7 +467,7 @@ public class HdfsProxyServer extends Server implements com.telenav.kivakit.files
     @Override
     protected ObjectSet<SwitchParser<?>> switchParsers()
     {
-        return ObjectSet.objectSet(
+        return ObjectSet.set(
                 DATA_PORT,
                 RMI_OBJECT_PORT,
                 CONFIGURATION_FOLDER,
@@ -519,14 +519,14 @@ public class HdfsProxyServer extends Server implements com.telenav.kivakit.files
                         case 'i':
                             try (InputStream hdfsIn = hdfsIns.get(StreamHandle.of(handle)))
                             {
-                                IO.copy(hdfsIn, out);
+                                IO.copy(this, hdfsIn, out);
                             }
                             break;
 
                         case 'o':
                             try (OutputStream hdfsOut = hdfsOuts.get(StreamHandle.of(handle)))
                             {
-                                IO.copy(in, hdfsOut);
+                                IO.copy(this, in, hdfsOut);
                             }
                             break;
 
