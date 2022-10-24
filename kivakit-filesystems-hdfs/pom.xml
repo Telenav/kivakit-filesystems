@@ -8,21 +8,20 @@
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 -->
 <project
-        xmlns:xsi = "http://www.w3.org/2001/XMLSchema-instance"
-        xmlns = "http://maven.apache.org/POM/4.0.0"
-        xsi:schemaLocation = "http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    xmlns:xsi = "http://www.w3.org/2001/XMLSchema-instance"
+    xmlns = "http://maven.apache.org/POM/4.0.0"
+    xsi:schemaLocation = "http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 
     <modelVersion>4.0.0</modelVersion>
 
     <parent>
-        <groupId>com.telenav</groupId>
-        <artifactId>telenav-root-superpom</artifactId>
-        <version>1.0.3</version>
+        <groupId>com.telenav.kivakit</groupId>
+        <artifactId>kivakit-filesystems-extensions</artifactId>
+        <version>1.8.2</version>
         <relativePath/>
     </parent>
     
-    <groupId>com.telenav.kivakit</groupId>
-    <artifactId>kivakit-filesystems-extensions</artifactId>
+    <artifactId>kivakit-filesystems-hdfs</artifactId>
     <version>1.8.2</version>
 
     <properties>
@@ -32,7 +31,9 @@
     <packaging>pom</packaging>
 
     <modules>
-        <module>kivakit-filesystems-hdfs</module>
+        <module>hdfs-proxy-spi</module>
+        <module>hdfs-proxy</module>
+        <module>hdfs-filesystem</module>
     </modules>
 
 </project>
